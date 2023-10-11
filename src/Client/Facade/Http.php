@@ -1,10 +1,8 @@
 <?php
 
-namespace klarnapayment\src\Http\Facade;
+namespace Invertus\Http\Client\Facade;
 
 use Invertus\Http\Client\Factory;
-use Invertus\Http\Client\PendingRequest;
-use klarnapayment\src\Http\Client\resource;
 
 
 /**
