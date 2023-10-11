@@ -1,0 +1,26 @@
+{
+    "name": "tomas-jasulaitis/http",
+    "description": "The Http package.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomas Jasulaitis",
+            "email": "tomas.jasulaitis@invertus.eu"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "ext-filter": "*",
+        "guzzlehttp/guzzle": "6.5.8",
+        "symfony/http-foundation": "4.4.49",
+        "illuminate/support": "5.8.*",
+        "phpunit/phpunit": "7.*",
+        "rize/uri-template": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Invertus\\Http\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

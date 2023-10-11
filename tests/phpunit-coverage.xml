@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         colors="true"
+         executionOrder="random"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutResourceUsageDuringSmallTests="true"
+         beStrictAboutOutputDuringTests="true"
+         failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Integration">
+            <directory>Integration</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src</directory>
+            <exclude>
+                <directory suffix="index.php">../src</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
+
