@@ -3418,7 +3418,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "rize/uri-template": 20
+        "rize/uri-template": 20,
+        "symfony/var-dumper": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
