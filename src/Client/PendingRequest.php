@@ -1136,4 +1136,14 @@ class PendingRequest
     {
         return $this->options;
     }
+
+    /**
+     * Retrieve the pending request promise.
+     *
+     * @return \GuzzleHttp\Promise\PromiseInterface|null
+     */
+    public function getPromise()
+    {
+        return $this->promise;
+    }
 }

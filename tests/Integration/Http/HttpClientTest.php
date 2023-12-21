@@ -3,6 +3,7 @@
 namespace Invertus\Tests\Integration\Http;
 
 use Exception;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use GuzzleHttp\TransferStats;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -53,10 +54,10 @@ class HttpClientTest extends TestCase
             'forge.laravel.com' => $this->factory::response('', HttpResponse::HTTP_OK),
         ]);
 
-        $response = $this->factory->post('http://vapor.laravel.com');
+        $response = $this->factory->post('https://vapor.laravel.com');
         $this->assertTrue($response->created());
 
-        $response = $this->factory->post('http://forge.laravel.com');
+        $response = $this->factory->post('https://forge.laravel.com');
         $this->assertFalse($response->created());
     }
 
@@ -2115,5 +2116,40 @@ class HttpClientTest extends TestCase
             ->handlerStats();
 
         $this->assertTrue($onStatsFunctionCalled);
+    }
+
+    public function testRequestsCanBeAsync()
+    {
+        $request = new PendingRequest($this->factory);
+
+        $promise = $request->async()->get('http://foo.com');
+
+        $this->assertInstanceOf(PromiseInterface::class, $promise);
+
+        $this->assertSame($promise, $request->getPromise());
+
+        $response = $promise->wait();
+
+        $this->assertTrue($response->ok());
+    }
+
+    public function testMultipleRequestsCanBeAsync()
+    {
+        $request = new PendingRequest($this->factory);
+
+        $promises = [
+            $request->async()->get('https://jsonplaceholder.typicode.com/todos/1'),
+            $request->async()->get('https://jsonplaceholder.typicode.com/todos/2'),
+            $request->async()->get('https://jsonplaceholder.typicode.com/todos/3')
+        ];
+
+        $response1 = $promises[0]->wait();
+        $response3 = $promises[2]->wait();
+        $response2 = $promises[1];
+
+        $this->assertTrue($response1->ok());
+        $this->assertTrue($response3->ok());
+
+        $this->assertInstanceOf(PromiseInterface::class, $response2);
     }
 }
