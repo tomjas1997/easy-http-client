@@ -15,11 +15,20 @@
         "symfony/http-foundation": "4.4.49",
         "illuminate/support": "5.8.*",
         "phpunit/phpunit": "7.*",
-        "rize/uri-template": "dev-master"
+        "rize/uri-template": "dev-master",
+        "symfony/var-dumper": "4.4.x-dev"
     },
     "autoload": {
         "psr-4": {
             "Invertus\\Http\\": "src/"
+        }
+    },
+    "config": {
+    "platform": {
+       "php": "7.1.3"
+   },
+        "allow-plugins": {
+            "kylekatarnls/update-helper": false
         }
     },
     "minimum-stability": "dev"

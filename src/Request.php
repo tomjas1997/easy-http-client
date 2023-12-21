@@ -4,6 +4,7 @@ namespace Invertus\Http;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Invertus\Http\Concerns\InteractsWithContentTypes;
 use Invertus\Http\Concerns\InteractsWithInput;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -15,8 +16,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  */
 class Request extends SymfonyRequest
 {
-    use Concerns\InteractsWithContentTypes,
-        InteractsWithInput;
+    use InteractsWithContentTypes, InteractsWithInput;
 
     /**
      * The decoded JSON content for the request.
@@ -437,7 +437,7 @@ class Request extends SymfonyRequest
     {
         $newRequest = (new static)->duplicate(
             $request->query->all(), $request->request->all(), $request->attributes->all(),
-            $request->cookies->all(), $request->server->all()
+            $request->cookies->all(), $request->files->all(), $request->server->all()
         );
 
         $newRequest->headers->replace($request->headers->all());
@@ -456,9 +456,9 @@ class Request extends SymfonyRequest
      *
      * @return static
      */
-    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $server = null): self
+    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null): self
     {
-        return parent::duplicate($query, $request, $attributes, $cookies, $server);
+        return parent::duplicate($query, $request, $attributes, $cookies, $files, $server);
     }
 
     /**

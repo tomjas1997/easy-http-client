@@ -4,6 +4,8 @@ namespace Invertus\Http\Concerns;
 
 use Illuminate\Support\Arr;
 use stdClass;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\VarDumper\VarDumper;
 
 trait InteractsWithInput
 {
@@ -102,9 +104,13 @@ trait InteractsWithInput
     {
         $keys = is_array($keys) ? $keys : func_get_args();
 
-        $input = $this->all();
+        foreach ($keys as $key) {
+            if (static::has($key)) {
+                return true;
+            }
+        }
 
-        return Arr::hasAny($input, $keys);
+        return false;
     }
 
     /**
@@ -298,30 +304,6 @@ trait InteractsWithInput
         return data_get(
             $this->getInputSource()->all() + $this->query->all(), $key, $default
         );
-    }
-
-    /**
-     * Retrieve input from the request as a Stringable instance.
-     *
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return \Illuminate\Support\Stringable
-     */
-    public function str($key, $default = null)
-    {
-        return $this->string($key, $default);
-    }
-
-    /**
-     * Retrieve input from the request as a Stringable instance.
-     *
-     * @param  string  $key
-     * @param  mixed  $default
-     * @return \Illuminate\Support\Stringable
-     */
-    public function string($key, $default = null)
-    {
-        return str($this->input($key, $default));
     }
 
     /**
