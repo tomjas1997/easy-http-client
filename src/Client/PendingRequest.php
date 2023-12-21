@@ -870,7 +870,7 @@ class PendingRequest
     {
         $clientMethod = $this->async ? 'requestAsync' : 'request';
 
-        $laravelData = $this->parseRequestData($method, $url, $options);
+        $onData = $this->parseRequestData($method, $url, $options);
 
         $onStats = function ($transferStats) {
             if (($callback = ($this->options['on_stats'] ?? false)) instanceof Closure) {
@@ -881,7 +881,7 @@ class PendingRequest
         };
 
         return $this->buildClient()->$clientMethod($method, $url, $this->mergeOptions([
-            'laravel_data' => $laravelData,
+            'on_data' => $onData,
             'on_stats' => $onStats,
         ], $options));
     }
@@ -1011,7 +1011,7 @@ class PendingRequest
                 return $promise->then(function ($response) use ($request, $options) {
                     if ($this->factory) {
                         $this->factory->recordRequestResponsePair(
-                            (new Request($request))->withData($options['laravel_data']),
+                            (new Request($request))->withData($options['on_data']),
                             new Response($response)
                         );
                     }
@@ -1033,7 +1033,7 @@ class PendingRequest
             return function ($request, $options) use ($handler) {
                 $response = ($this->stubCallbacks ?? collect())
                      ->map
-                     ->__invoke((new Request($request))->withData($options['laravel_data']), $options)
+                     ->__invoke((new Request($request))->withData($options['on_data']), $options)
                      ->filter()
                      ->first();
 
@@ -1062,7 +1062,7 @@ class PendingRequest
         return tap($request, function (&$request) use ($options) {
             $this->beforeSendingCallbacks->each(function ($callback) use (&$request, $options) {
                 $callbackResult = call_user_func(
-                    $callback, (new Request($request))->withData($options['laravel_data']), $options, $this
+                    $callback, (new Request($request))->withData($options['on_data']), $options, $this
                 );
 
                 if ($callbackResult instanceof RequestInterface) {
